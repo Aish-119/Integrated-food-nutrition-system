@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Supply & Nutrition Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-dark bg-success shadow-sm mb-4">
+        <div class="container">
+            <span class="navbar-brand fw-bold">🌾 Integrated Food Supply & Nutrition Portal</span>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold text-dark">Enterprise Management Dashboard</h1>
+            <p class="text-muted">Manage beneficiaries, food items, inventory batches, and distribution seamlessly.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Beneficiaries Card -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 border-success">
+                    <div class="card-body text-center">
+                        <h4 class="card-title text-success">Beneficiaries</h4>
+                        <p class="card-text text-muted small">Maintain profiles, household size, and nutrition needs.</p>
+                        <a href="/beneficiaries" class="btn btn-success btn-sm">View Beneficiaries</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Food Items & Inventory Card -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 border-success">
+                    <div class="card-body text-center">
+                        <h4 class="card-title text-success">Inventory & Food</h4>
+                        <p class="card-text text-muted small">Track food items, stock batches, and expiry dates.</p>
+                        <a href="/inventory" class="btn btn-success btn-sm">View Inventory</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Distributions Card -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 border-success">
+                    <div class="card-body text-center">
+                        <h4 class="card-title text-success">Distributions</h4>
+                        <p class="card-text text-muted small">Plan and record food distribution status.</p>
+                        <a href="/distributions" class="btn btn-success btn-sm">View Distributions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
