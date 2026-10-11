@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Beneficiaries Management</h2>
-            <a href="/" class="btn btn-secondary btn-sm">← Back to Dashboard</a>
+            <a href="/" class="btn btn-secondary btn-sm">â† Back to Dashboard</a>
         </div>
 
         <div class="card shadow-sm">
@@ -36,8 +36,8 @@
                             <td th:text="${b.id}">1</td>
                             <td th:text="${b.name}">John Doe</td>
                             <td th:text="${b.age}">35</td>
-                            <td th:text="${b.household_size}">4</td>
-                            <td th:text="${b.nutrition_needs}">High Protein</td>
+                            <td th:text="${b.householdSize}">4</td>
+                            <td th:text="${b.nutritionNeeds}">High Protein</td>
                             <td th:text="${b.address}">123 Street Name</td>
                         </tr>
                         <!-- Fallback if database table is empty -->
