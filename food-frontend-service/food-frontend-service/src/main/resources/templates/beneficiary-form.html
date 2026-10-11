@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Beneficiary</title>
+</head>
+
+<body>
+    <h1>Add Beneficiary</h1>
+    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+    <form th:action="@{/beneficiaries/save}" th:object="${beneficiary}" method="post">
+        <p><label>Name:</label> <input type="text" th:field="*{name}" required></p>
+        <p><label>Age:</label> <input type="number" th:field="*{age}" min="0" required></p>
+        <p><label>Household Size:</label> <input type="number" th:field="*{householdSize}" min="1" required></p>
+        <p><label>Nutrition Needs:</label> <textarea th:field="*{nutritionNeeds}" required></textarea></p>
+        <p><label>Address:</label> <textarea th:field="*{address}" required></textarea></p>
+        <button type="submit">Save Beneficiary</button>
+    </form>
+
+    <p><a th:href="@{/beneficiaries}">Back to Beneficiaries</a></p>
+</body>
+
+</html>
