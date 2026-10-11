@@ -1,49 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Procurement & Suppliers</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Procurement Management</title>
 </head>
-<body class="bg-light py-4">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Procurement & Supplier Management</h2>
-            <a href="/" class="btn btn-secondary btn-sm">← Back to Dashboard</a>
-        </div>
 
-        <!-- Procurement Table -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Purchase Orders & Procurements</h5>
-                <a href="/procurements/add" class="btn btn-light btn-sm fw-bold">+ New Purchase Order</a>
-            </div>
-            <div class="card-body">
-                <table class="table table-striped table-hover align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Food Item ID</th>
-                            <th>Quantity</th>
-                            <th>Procurement Date</th>
-                            <th>Supplier Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="p : ${procurementsList}">
-                            <td th:text="${p.id}">1</td>
-                            <td th:text="${p.food_item_id}">101</td>
-                            <td th:text="${p.quantity}">250.00</td>
-                            <td th:text="${p.procurement_date}">2026-10-10</td>
-                            <td th:text="${p.supplier}">AgroCorp Ltd</td>
-                        </tr>
-                        <tr th:if="${#lists.isEmpty(procurementsList)}">
-                            <td colspan="5" class="text-center text-muted">No procurement records found.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<body>
+
+    <h1>Procurement Management</h1>
+
+    <p>
+        <a th:href="@{/}">Home</a> |
+        <a th:href="@{/inventory}">Inventory</a> |
+        <a th:href="@{/beneficiaries}">Beneficiaries</a>
+    </p>
+
+    <p style="color:green" th:if="${success}" th:text="${success}"></p>
+    <p style="color:red" th:if="${error}" th:text="${error}"></p>
+
+    <h2>Record Procurement</h2>
+
+    <form th:action="@{/procurement/create}" method="post">
+
+        <p>
+            <label>Food Item:</label><br>
+            <select name="foodItemId" required>
+                <option value="">Select food item</option>
+                <option th:each="f : ${foodItems}" th:value="${f['id']}"
+                    th:text="${f['name'] + ' (ID: ' + f['id'] + ')'}">
+                </option>
+            </select>
+        </p>
+
+        <p>
+            <label>Quantity:</label><br>
+            <input type="number" name="quantity" min="0.01" step="0.01" required>
+        </p>
+
+        <p>
+            <label>Supplier:</label><br>
+            <input type="text" name="supplier" required>
+        </p>
+
+        <p>
+            <label>Procurement Date:</label><br>
+            <input type="date" name="procurementDate" th:value="${today}" required>
+        </p>
+
+        <button type="submit">Save Procurement</button>
+    </form>
+
+    <h2>Recorded Procurements</h2>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Food Item</th>
+                <th>Quantity</th>
+                <th>Supplier</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="p : ${procurements}">
+                <td th:text="${p['id']}"></td>
+                <td th:text="${p['foodItem'] != null
+                ? p['foodItem']['name'] : 'Unknown'}"></td>
+                <td th:text="${p['quantity']}"></td>
+                <td th:text="${p['supplier']}"></td>
+                <td th:text="${p['procurementDate']}"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(procurements)}">
+                <td colspan="5">No procurement records yet.</td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
+
 </html>
