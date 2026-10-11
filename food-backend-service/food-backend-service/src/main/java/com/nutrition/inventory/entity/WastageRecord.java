@@ -7,94 +7,105 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "wastage_records")
 public class WastageRecord {
- 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
 
-@ManyToOne
-@JoinColumn(name = "food_item_id", nullable = false)
-private FoodItem foodItem;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@ManyToOne
-@JoinColumn(name = "batch_id")
-private InventoryBatch batch;
+    @ManyToOne
+    @JoinColumn(name = "food_item_id", nullable = false)
+    private FoodItem foodItem;
 
-@Column(nullable = false, precision = 12, scale = 2)
-private BigDecimal quantity;
+    @ManyToOne
+    @JoinColumn(name = "batch_id")
+    private InventoryBatch batch;
 
-@Column(nullable = false, length = 30)
-private String unit;
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal quantity;
 
-@Column(length = 150)
-private String wastageReason;
+    @Column(nullable = false, length = 30)
+    private String unit;
 
-private LocalDate wastageDate = LocalDate.now();
+    @Column(length = 150)
+    private String wastageReason;
 
-@Column(columnDefinition = "TEXT")
-private String remarks;
+    private LocalDate wastageDate = LocalDate.now();
 
-public WastageRecord() {
-}
+    @Column(columnDefinition = "TEXT")
+    private String remarks;
 
-public Long getId() {
-    return id;
-}
+    // Tracks whether this record has already deducted stock.
+    @Column(name = "stock_deducted")
+    private Boolean stockDeducted = false;
 
-public FoodItem getFoodItem() {
-    return foodItem;
-}
+    public WastageRecord() {
+    }
 
-public void setFoodItem(FoodItem foodItem) {
-    this.foodItem = foodItem;
-}
+    public Long getId() {
+        return id;
+    }
 
-public InventoryBatch getBatch() {
-    return batch;
-}
+    public FoodItem getFoodItem() {
+        return foodItem;
+    }
 
-public void setBatch(InventoryBatch batch) {
-    this.batch = batch;
-}
+    public void setFoodItem(FoodItem foodItem) {
+        this.foodItem = foodItem;
+    }
 
-public BigDecimal getQuantity() {
-    return quantity;
-}
+    public InventoryBatch getBatch() {
+        return batch;
+    }
 
-public void setQuantity(BigDecimal quantity) {
-    this.quantity = quantity;
-}
+    public void setBatch(InventoryBatch batch) {
+        this.batch = batch;
+    }
 
-public String getUnit() {
-    return unit;
-}
+    public BigDecimal getQuantity() {
+        return quantity;
+    }
 
-public void setUnit(String unit) {
-    this.unit = unit;
-}
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
 
-public String getWastageReason() {
-    return wastageReason;
-}
+    public String getUnit() {
+        return unit;
+    }
 
-public void setWastageReason(String wastageReason) {
-    this.wastageReason = wastageReason;
-}
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
-public LocalDate getWastageDate() {
-    return wastageDate;
-}
+    public String getWastageReason() {
+        return wastageReason;
+    }
 
-public void setWastageDate(LocalDate wastageDate) {
-    this.wastageDate = wastageDate;
-}
+    public void setWastageReason(String wastageReason) {
+        this.wastageReason = wastageReason;
+    }
 
-public String getRemarks() {
-    return remarks;
-}
+    public LocalDate getWastageDate() {
+        return wastageDate;
+    }
 
-public void setRemarks(String remarks) {
-    this.remarks = remarks;
-}
+    public void setWastageDate(LocalDate wastageDate) {
+        this.wastageDate = wastageDate;
+    }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Boolean getStockDeducted() {
+        return stockDeducted;
+    }
+
+    public void setStockDeducted(Boolean stockDeducted) {
+        this.stockDeducted = stockDeducted;
+    }
 }

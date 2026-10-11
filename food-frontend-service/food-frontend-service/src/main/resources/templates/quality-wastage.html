@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quality and Wastage Management</title>
+</head>
+
+<body>
+
+    <h1>Food Quality and Wastage Management</h1>
+
+    <p>
+        <a th:href="@{/}">Home</a> |
+        <a th:href="@{/inventory}">Inventory</a> |
+        <a th:href="@{/procurement}">Procurement</a> |
+        <a th:href="@{/distribution}">Distribution</a>
+    </p>
+
+    <p style="color: green" th:if="${success}" th:text="${success}"></p>
+
+    <p style="color: red" th:if="${error}" th:text="${error}"></p>
+
+    <!-- QUALITY INSPECTION FORM -->
+
+    <h2>Record Quality Inspection</h2>
+
+    <form th:action="@{/quality-inspections/create}" method="post">
+
+        <p>
+            Food Item<br>
+            <select name="foodItemId" required>
+                <option value="">Select food item</option>
+                <option th:each="f : ${foodItems}" th:value="${f['id']}"
+                    th:text="${f['name'] + ' (ID: ' + f['id'] + ')'}">
+                </option>
+            </select>
+        </p>
+
+        <p>
+            Batch (optional)<br>
+            <select name="batchId">
+                <option value="">No specific batch</option>
+                <option th:each="b : ${batches}" th:value="${b['id']}"
+                    th:text="${'Batch ' + b['batchNumber'] + ' (ID: ' + b['id'] + ')'}">
+                </option>
+            </select>
+        </p>
+
+        <p>
+            Inspection Date<br>
+            <input type="date" name="inspectionDate" th:value="${today}" required>
+        </p>
+
+        <p>
+            Inspector Name<br>
+            <input type="text" name="inspectorName" maxlength="150" required>
+        </p>
+
+        <p>
+            Quality Status<br>
+            <select name="qualityStatus" required>
+                <option value="ACCEPTED">Accepted</option>
+                <option value="REJECTED">Rejected</option>
+                <option value="NEEDS_REVIEW">Needs Review</option>
+            </select>
+        </p>
+
+        <p>
+            Remarks<br>
+            <textarea name="remarks" rows="3" cols="40"></textarea>
+        </p>
+
+        <button type="submit">Save Inspection</button>
+    </form>
+
+    <hr>
+
+    <!-- WASTAGE FORM -->
+
+    <h2>Record Food Wastage</h2>
+
+    <form th:action="@{/wastage-records/create}" method="post">
+
+        <p>
+            Food Item<br>
+            <select name="foodItemId" required>
+                <option value="">Select food item</option>
+                <option th:each="f : ${foodItems}" th:value="${f['id']}"
+                    th:text="${f['name'] + ' (ID: ' + f['id'] + ')'}">
+                </option>
+            </select>
+        </p>
+
+        <p>
+            Inventory Batch (required)<br>
+            <select name="batchId" required>
+                <option value="">Select inventory batch</option>
+                <option th:each="b : ${batches}" th:value="${b['id']}" th:text="${'Batch ' + b['batchNumber']
+                            + ' (ID: ' + b['id'] + ')'
+                            + ' - ' + b['quantity'] + ' ' + b['unit']}">
+                </option>
+            </select>
+        </p>
+
+        <p>
+            Quantity Wasted<br>
+            <input type="number" name="quantity" min="0.01" step="0.01" required>
+        </p>
+
+        <p>
+            Unit<br>
+            <select name="unit" required>
+                <option value="KG">KG</option>
+                <option value="G">G</option>
+                <option value="L">L</option>
+                <option value="PCS">PCS</option>
+            </select>
+        </p>
+
+        <p>
+            Reason<br>
+            <select name="wastageReason" required>
+                <option value="EXPIRED">Expired</option>
+                <option value="DAMAGED">Damaged</option>
+                <option value="SPOILED">Spoiled</option>
+                <option value="CONTAMINATED">Contaminated</option>
+                <option value="OTHER">Other</option>
+            </select>
+        </p>
+
+        <p>
+            Wastage Date<br>
+            <input type="date" name="wastageDate" th:value="${today}" required>
+        </p>
+
+        <p>
+            Remarks<br>
+            <textarea name="remarks" rows="3" cols="40"></textarea>
+        </p>
+
+        <button type="submit">Save Wastage Record</button>
+    </form>
+
+    <hr>
+
+    <!-- QUALITY INSPECTION RECORDS -->
+
+    <h2>Quality Inspections</h2>
+
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Food Item</th>
+                <th>Batch</th>
+                <th>Date</th>
+                <th>Inspector</th>
+                <th>Status</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="i : ${inspections}">
+                <td th:text="${i['id']}"></td>
+
+                <td th:text="${i['foodItem'] != null
+                    ? i['foodItem']['name'] : 'Unknown'}"></td>
+
+                <td th:text="${i['batch'] != null
+                    ? i['batch']['batchNumber'] : '-'}"></td>
+
+                <td th:text="${i['inspectionDate']}"></td>
+                <td th:text="${i['inspectorName']}"></td>
+                <td th:text="${i['qualityStatus']}"></td>
+                <td th:text="${i['remarks']}"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(inspections)}">
+                <td colspan="7">No quality inspections recorded.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- WASTAGE RECORDS -->
+
+    <h2>Wastage Records</h2>
+
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Food Item</th>
+                <th>Batch</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Reason</th>
+                <th>Date</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="w : ${wastageRecords}">
+                <td th:text="${w['id']}"></td>
+
+                <td th:text="${w['foodItem'] != null
+                    ? w['foodItem']['name'] : 'Unknown'}"></td>
+
+                <td th:text="${w['batch'] != null
+                    ? w['batch']['batchNumber'] : '-'}"></td>
+
+                <td th:text="${w['quantity']}"></td>
+                <td th:text="${w['unit']}"></td>
+                <td th:text="${w['wastageReason']}"></td>
+                <td th:text="${w['wastageDate']}"></td>
+                <td th:text="${w['remarks']}"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(wastageRecords)}">
+                <td colspan="8">No wastage recorded.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>

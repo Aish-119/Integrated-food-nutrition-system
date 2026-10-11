@@ -1,50 +1,100 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Nutrition Programmes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Nutrition Programme Management</title>
 </head>
-<body class="bg-light py-4">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Nutrition Programme Management</h2>
-            <a href="/" class="btn btn-secondary btn-sm">← Back to Dashboard</a>
-        </div>
 
-        <div class="card shadow-sm">
-            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Active Programmes & Meal Plans</h5>
-                <a href="/programmes/add" class="btn btn-light btn-sm fw-bold">+ Add Programme</a>
-            </div>
-            <div class="card-body">
-                <table class="table table-striped table-hover align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Programme Name</th>
-                            <th>Description</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="prog : ${programmesList}">
-                            <td th:text="${prog.id}">1</td>
-                            <td th:text="${prog.name}">Mid-Day Meal Scheme</td>
-                            <td th:text="${prog.description}">Providing high-protein lunch to local schools</td>
-                            <td th:text="${prog.start_date}">2026-01-01</td>
-                            <td th:text="${prog.end_date}">2026-12-31</td>
-                            <td><span class="badge bg-success" th:text="${prog.status}">Active</span></td>
-                        </tr>
-                        <tr th:if="${#lists.isEmpty(programmesList)}">
-                            <td colspan="6" class="text-center text-muted">No nutrition programmes found.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<body>
+
+    <h1>Nutrition Programme Management</h1>
+
+    <p>
+        <a th:href="@{/}">Home</a> |
+        <a th:href="@{/beneficiaries}">Beneficiaries</a> |
+        <a th:href="@{/inventory}">Inventory</a> |
+        <a th:href="@{/procurement}">Procurement</a> |
+        <a th:href="@{/distribution}">Distribution</a> |
+        <a th:href="@{/quality-wastage}">Quality and Wastage</a>
+    </p>
+
+    <p style="color:green" th:if="${success}" th:text="${success}"></p>
+
+    <p style="color:red" th:if="${error}" th:text="${error}"></p>
+
+    <h2>Create Nutrition Programme</h2>
+
+    <form th:action="@{/programmes/create}" method="post">
+
+        <p>
+            Programme Name<br>
+            <input type="text" name="name" maxlength="150" required>
+        </p>
+
+        <p>
+            Description<br>
+            <textarea name="description" rows="3" cols="40"></textarea>
+        </p>
+
+        <p>
+            Start Date<br>
+            <input type="date" name="startDate">
+        </p>
+
+        <p>
+            End Date<br>
+            <input type="date" name="endDate">
+        </p>
+
+        <p>
+            Status<br>
+            <select name="status" required>
+                <option value="ACTIVE">Active</option>
+                <option value="PLANNED">Planned</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="INACTIVE">Inactive</option>
+            </select>
+        </p>
+
+        <button type="submit">Save Programme</button>
+
+    </form>
+
+    <h2>Recorded Programmes</h2>
+
+    <table border="1" cellpadding="6">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr th:each="p : ${programmes}">
+                <td th:text="${p['id']}"></td>
+                <td th:text="${p['name']}"></td>
+                <td th:text="${p['description']}"></td>
+                <td th:text="${p['startDate']}"></td>
+                <td th:text="${p['endDate']}"></td>
+                <td th:text="${p['status']}"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(programmes)}">
+                <td colspan="6">No nutrition programmes recorded.</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
 </body>
+
 </html>
